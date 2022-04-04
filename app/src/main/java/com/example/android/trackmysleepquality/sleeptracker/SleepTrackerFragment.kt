@@ -17,6 +17,7 @@
 package com.example.android.trackmysleepquality.sleeptracker
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,11 +72,18 @@ class SleepTrackerFragment : Fragment() {
         binding.sleepList.adapter = sleepNightAdapter
         sleepTrackerViewModel.nights.observe(viewLifecycleOwner, Observer {
             it?.let {
-                sleepNightAdapter.submitList(it)
+                sleepNightAdapter.addHeaderAndSubmitList(it)
             }
         })
 
         val manager = GridLayoutManager(activity, 3)
+        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+            override fun getSpanSize(position: Int): Int = when(position) {
+                0 -> 3
+                else -> 1
+            }
+
+        }
         binding.sleepList.layoutManager = manager
 
         // Add an Observer on the state variable for showing a Snackbar message
