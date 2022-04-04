@@ -132,7 +132,7 @@ class SleepTrackerViewModel(
         _navigateToSleepQuality.value = null
     }
 
-    private val _navigateToSleepDataQuality = MutableLiveData<Long>()
+    private val _navigateToSleepDataQuality = MutableLiveData<Long?>()
     val navigateToSleepDataQuality
         get() = _navigateToSleepDataQuality
 

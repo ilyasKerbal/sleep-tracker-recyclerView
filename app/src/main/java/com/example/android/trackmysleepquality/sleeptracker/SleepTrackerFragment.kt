@@ -66,7 +66,7 @@ class SleepTrackerFragment : Fragment() {
         binding.lifecycleOwner = this
 
         val sleepNightAdapter = SleepNightAdapter(SleepNightListener { nightId ->
-            Toast.makeText(context, "nightId: ${nightId}", Toast.LENGTH_SHORT).show()
+            sleepTrackerViewModel.onSleepNightClicked(nightId)
         })
         binding.sleepList.adapter = sleepNightAdapter
         sleepTrackerViewModel.nights.observe(viewLifecycleOwner, Observer {
@@ -90,6 +90,13 @@ class SleepTrackerFragment : Fragment() {
                 // Reset state to make sure the snackbar is only shown once, even if the device
                 // has a configuration change.
                 sleepTrackerViewModel.doneShowingSnackbar()
+            }
+        })
+
+        sleepTrackerViewModel.navigateToSleepDataQuality.observe(viewLifecycleOwner, Observer { night ->
+            night?.let {
+                this.findNavController().navigate(SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(night))
+                sleepTrackerViewModel.onSleepDataQualityNavigated()
             }
         })
 
